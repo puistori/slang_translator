@@ -11,6 +11,7 @@ from lemmatizers import lemmatize_nominal,lemmatize_verb
 from basic_word_manipulation import remove_copies
 
   # loading in corpus
+"""
 file = open("assign1.3_out","rb")
 sanalista = pickle.load(file)
 file.close()
@@ -24,7 +25,7 @@ for old_key in med:
     new_key = old_key.lower()
     med[new_key] = med.pop(old_key)
 
-
+"""
 
 def translate_finnish(text,reference):
     
@@ -59,7 +60,6 @@ def translate_finnish(text,reference):
     # a list of all possible lemmas that could have been derived from that word.
     master_list = []
     print(tokenized_text)
-    print('shep')
     for token_2 in tokenized_text:
         mediating_list = list(lemmatize_nominal(token_2))
         mediating_list +=  list(lemmatize_verb(token_2))
@@ -87,7 +87,7 @@ def translate_finnish(text,reference):
 
 
 
-print(translate_finnish("euforia on paras juttu",med))
+#print(translate_finnish("euforia on paras juttu",med))
 #print(sanalista)
 
 

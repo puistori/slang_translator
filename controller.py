@@ -1,16 +1,21 @@
 from flask import Flask, render_template, request, redirect , jsonify, json, Response, url_for, send_file
 from jinja2 import Template
 import sys
-sys.path.insert(1, '/core_files/Finnish\ Slang/')
-from finnish_translator import translate_finnish
+sys.path.insert(1, 'core_files/Finnish Slang/')
+from finnish_translator import *
+from sumfin import sheppy
+
+
+
 #from core_files.Finnish Slang. import translate_finnish
+# !!! oiko gives aa ... :(
 app = Flask(__name__)
 
 # This is a provisional database of acceptable email-password combos.
 # Random TODO list: prettify , testing
 
 ## hmm, am I allowed to put it here?
-file = open("core_files/Finish\ Slang/assign1.3_out","rb")
+file = open("core_files/Finnish Slang/assign1.3_out","rb")
 sanalista = pickle.load(file)
 file.close()
 
@@ -31,8 +36,13 @@ def main():
 @app.route("/translate")
 def translate():
     text = request.args.get('input',"",type=str)
-    #return jsonify(result=(translate_finnish(text,sanalista)))
-    return jsonify(result='ok!')
+    answer = translate_finnish(text,med)
+    answer = str(answer)
+    print('kester')
+    print(answer)
+    print('kester')
+    return jsonify(result=(answer))
+    #return jsonify(result=text)
 
 
 @app.route("/pull",methods=['POST'])
