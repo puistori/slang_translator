@@ -78,7 +78,17 @@ def translate_finnish(text,reference):
             print (possibility)
             if possibility in reference:
                 # list_of_possible_lemmas[0] should point to the word as it was originally seen in the text. This allows us to go back and highlight it.
-                answers.append({ (possibility, list_of_possible_lemmas[0])  :reference[possibility]})
+                
+                # also, to make this dictionary more parsable in the javascript, I need to make sure that the up and down votes are represented both as strings.
+                transformed_answer_content = []
+                answer_content = reference[possibility]
+                for given_answer in answer_content:
+                    transformed_answer = list(given_answer)
+                    transformed_answer[2] = str(transformed_answer[2])
+                    transformed_answer[3] = str(transformed_answer[3])
+                    transformed_answer_content.append(tuple(transformed_answer))
+
+                answers.append({ (possibility, list_of_possible_lemmas[0])  : transformed_answer_content })
     
 
     return answers

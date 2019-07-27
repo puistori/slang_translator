@@ -30,4 +30,23 @@
 </html>
 
 
+<!--
+console.log("hello")
+//console.log(retainer.slice(1,(retainer.length -1)))
+
+var json_in = retainer.slice(1,(retainer.length -1));
+
+var keys_patt = /\(\'.*\', \'.*\'\):/
+var key_patt = /\'.*\'/
+var keys = (json_in.match(keys_patt)[0]).match(key_patt)
+var lemma = keys[0]
+var instance = keys[1]
+
+var all_answers_patt = /\[.*\]/
+var individual_answers_patt
+
+console.log('ok')
+console.log(keys)
+console.log('not ok')
+-->
 

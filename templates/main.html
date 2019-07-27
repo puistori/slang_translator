@@ -48,6 +48,26 @@
         <input type='text' placeholder="Insert text here" id='input'>
         <input type='submit' value="Translate", id="Translate">
         <p id="result"></p>
+
+        <table id='answers'>
+            <thead>
+            <tr>
+                <th>Lemma</th>
+                <th>Instance</th>
+                <th>Definition</th>
+                <th>Examples</th>
+                <th>Upvotes</th>
+                <th>Downvotes</th>
+                <th>CycleButton</th>
+            </tr>
+            </thead>
+            <tbody id='answers_body'>
+
+            </tbody>
+        
+
+        </table>
+
     </div>
 </div>
 
@@ -59,16 +79,212 @@
 
 <script>
 
+
+var answers_dict = {};
+var answers_count_dict = {};
+var retainer;
+var retainer2;
+
+// erkat doesn't work for some reason :(  you'll have to look into this. !!!
+// !!! definitions that have () in them fuck you up
+// provide a limit to the upcycle
+
+// This is the primary function for taking in the translations and putting them in the table.
+function set_up(){
+var json_in = retainer.slice(1,(retainer.length -1));
+
+var words_patt = /\{.*?\}/g
+var key_patt = /\{\(\'.*\', \'.*\'\):/
+var key_divider_patt = /'[^,]*?'/g
+
+var all_answers_patt = /: \[.*\]/
+var individual_answers_patt = /\(.*?\)/g 
+var answer_elements_patt = /\'.*?\'/g
+
+var words = json_in.match(words_patt)
+
+
+for (var word of words){
+    // First, we gotta find the lemma and instance.
+    key = word.match(key_patt)[0];
+
+    divided_keys = key.match(key_divider_patt);
+    
+    lemma = divided_keys[0];
+    instance = divided_keys[1];
+    
+    // Now let's get all the answers.
+
+    var all_answers = word.match(all_answers_patt)[0]
+    var individual_answers = all_answers.match(individual_answers_patt)
+
+    // enter it into the dictionaries - you will need this to cycle through answers.
+
+    answers_dict[lemma.replace(/\'/g,"")] = individual_answers
+    answers_count_dict[lemma.replace(/\'/g,"")] = 0
+
+    // creating the table rows.
+    
+    var new_row = document.createElement("TR");
+    new_row.id = lemma;
+    document.getElementById('answers_body').appendChild(new_row);
+    
+    // add in lemma and instance
+    var lemma_td = document.createElement("TD");
+    lemma_td.id = lemma + '0';
+    lemma_td.innerHTML = lemma.replace(/\'/g,"");
+    new_row.appendChild(lemma_td);
+    var instance_td = document.createElement("TD");
+    instance_td.id = lemma + '1';
+    instance_td.innerHTML = instance.replace(/\'/g,"");;
+    new_row.appendChild(instance_td);
+
+
+
+    var answer_elements = individual_answers[0].match(answer_elements_patt);
+
+    for (var i = 0; i < 4 ; i++){
+        var table_data = document.createElement("TD");
+        table_data.id = lemma+ (i+2).toString();
+        table_data.innerHTML = answer_elements[i].replace(/\'/g,"");
+        new_row.appendChild(table_data)
+    }
+    var btn = document.createElement("BUTTON");
+    btn.id = 6;
+    btn.onclick= function() {cycle_answers(this.id)}; 
+    new_row.appendChild(btn);
+
+}
+
+}
+
+function clear(){
+    var clear_me = document.getElementById('answers_body')
+    while (clear_me.firstChild){
+        clear_me.removeChild(clear_me.firstChild)
+    }
+}
+
+function cycle_answers(btn_id){
+    
+    
+
+    var btn = document.getElementById(btn_id);
+    var lemma = btn.parentNode.firstChild.innerHTML;
+    
+
+
+    var count = answers_count_dict[lemma];
+    count +=1; 
+
+    answers_count_dict[lemma] = count;
+
+    var translations = answers_dict[lemma];
+    var new_translation = translations[count];
+
+    console.log(new_translation);
+
+    var answer_elements_patt = /\'.*?\'/g
+    var answer_elements = new_translation.match(answer_elements_patt)
+    for (var i = 0; i < 4 ; i++){
+        var change_me_id = "\'" + lemma+ "\'" + (i+2).toString();
+        var change_me = document.getElementById( change_me_id )
+        change_me.innerHTML = answer_elements[i]
+    }
+
+}
+
+
 $(function() {
     $('#Translate').bind('click', function() {
       $.getJSON('/translate', {
         input: $('#input').val(),
       }, function(data) {
-          console.log("okok!!");
-        $("#result").text( (data.result).toString() );
+          retainer = (data.result).toString();
+          clear()
+          set_up()
+        //$("#result").text( (data.result).toString() );
+        
       });
       return false;
     });
   });
 
 </script>
+
+<!--
+
+var answers_dict = {};
+var answers_count_dict = {};
+
+var json_in = retainer.slice(1,(retainer.length -1));
+
+var words_patt = /\{.*?\}/g
+var key_patt = /\{\(\'.*\', \'.*\'\):/
+var key_divider_patt = /'[^,]*?'/g
+
+var all_answers_patt = /: \[.*\]/
+var individual_answers_patt = /\(.*\)/g 
+var answer_elements_patt = /\'.*?\'/g
+
+var words = json_in.match(words_patt)
+
+
+for (var word of words){
+    // First, we gotta find the lemma and instance.
+    key = word.match(key_patt)[0];
+
+    divided_keys = key.match(key_divider_patt);
+    
+    lemma = divided_keys[0];
+    instance = divided_keys[1];
+    
+    // Now let's get all the answers.
+
+    var all_answers = word.match(all_answers_patt)[0]
+    var individual_answers = all_answers.match(individual_answers_patt)
+
+    // enter it into the dictionaries - you will need this to cycle through answers.
+
+    answers_dict[lemma] = individual_answers
+    answers_count_dict[lemma] = 0
+
+    // creating the table rows.
+    
+    var new_row = document.createElement("TR");
+    new_row.id = lemma;
+    document.getElementById('answers').appendChild(new_row);
+    
+    // add in lemma and instance
+    var lemma_td = document.createElement("TD");
+    lemma_td.id = 0;
+    lemma_td.innerHTML = lemma;
+    new_row.appendChild(lemma_td);
+    var instance_td = document.createElement("TD");
+    instance_td.id = 1;
+    instance_td.innerHTML = instance;
+    new_row.appendChild(instance_td);
+
+
+
+    var answer_elements = individual_answers[0].match(answer_elements_patt);
+
+    for (var i = 0; i < 4 ; i++){
+        var table_data = document.createElement("TD");
+        table_data.id = i;
+        table_data.innerHTML = answer_elements[i]
+        new_row.appendChild(table_data)
+    }
+    var btn = document.createElement("BUTTON");
+    btn.id = 5;
+    new_row.appendChild(btn);
+
+}
+
+
+function cycle_answers(lemma){
+
+}
+
+
+-->
