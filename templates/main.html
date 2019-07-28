@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 
 <html>
+<link rel="stylesheet" type="text/css" href="css">
 <div class='navbar'>
-    <label for="">In English</label>
-    <label>Suomeksi</label>
+    <label for="">In English</label><span> </span>
+    <label>Suomeksi</label><span> </span>
     <label>På Svenska</label>
 </div>
 
-<div class='row'>
-    <div class='column'>
+<h1>Welcome to the Finnish Slang Translator!</h1>
 
-        <h1>Welcome to the Finnish Slang Translator!</h1>
+<div class='main'>
+<div class='row'>
+    <div class='column-left'>
+
+        
         <h2>About</h2>
         <p>The Finnish Slang translator is a translation tool that provides the
             definitions of Finnish Slang words that are found within a given text.
@@ -44,8 +48,9 @@
 
 
     </div>
-    <div class='column'>
-        <input type='text' placeholder="Insert text here" id='input'>
+    <div class='column-right'>
+        <textarea placeholder="Insert text here" id='input'></textarea>
+        <br>
         <input type='submit' value="Translate", id="Translate">
         <p id="result"></p>
 
@@ -70,7 +75,7 @@
 
     </div>
 </div>
-
+</div>
 
 
 </html>
