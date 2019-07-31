@@ -49,7 +49,7 @@
 
     </div>
     <div class='column-right'>
-        <textarea placeholder="Insert text here" id='input'></textarea>
+        <div contenteditable="true" id="input" placeholder='Insert text here'></div>
         <br>
         <input type='submit' value="Translate", id="Translate">
         <p id="result"></p>
@@ -63,7 +63,8 @@
                 <th>Examples</th>
                 <th>Upvotes</th>
                 <th>Downvotes</th>
-                <th>CycleButton</th>
+                <th>Cycle Up</th>
+                <th>Cycle Down</th>
             </tr>
             </thead>
             <tbody id='answers_body'>
@@ -92,6 +93,10 @@ var retainer2;
 
 // erkat doesn't work for some reason :(  you'll have to look into this. !!!
 // !!! definitions that have () in them fuck you up
+// !!! starting with a space fucks you up :(
+// enää suggests entä as an answer. I'd hardcode this one out.
+// multiple entries of the same word cause problems.
+// The replace doesn't keep case. It doesn't really matter tbh, but it is technically an imperfection. 
 // provide a limit to the upcycle
 
 // This is the primary function for taking in the translations and putting them in the table.
@@ -147,17 +152,33 @@ for (var word of words){
 
 
     var answer_elements = individual_answers[0].match(answer_elements_patt);
-
+    // Now we're actually placing the data in the HTML.
     for (var i = 0; i < 4 ; i++){
         var table_data = document.createElement("TD");
         table_data.id = lemma+ (i+2).toString();
         table_data.innerHTML = answer_elements[i].replace(/\'/g,"");
         new_row.appendChild(table_data)
     }
-    var btn = document.createElement("BUTTON");
-    btn.id = 6;
-    btn.onclick= function() {cycle_answers(this.id)}; 
-    new_row.appendChild(btn);
+    // adding the up button. . .
+    var uptd = document.createElement("TD");
+    var upbtn = document.createElement("BUTTON");
+    upbtn.id = lemma+(6).toString();
+    upbtn.innerHTML = "Next"
+    upbtn.onclick= function() {cycle_answers(this.id)}; 
+    new_row.appendChild(uptd);
+    uptd.appendChild(upbtn);
+    // adding the cycle down button.
+    var downtd = document.createElement("TD");
+    var downbtn = document.createElement("BUTTON");
+    downbtn.id = lemma+(7).toString();
+    downbtn.innerHTML = "Previous"
+    downbtn.onclick= function() {cycle_answers_back(this.id)}; 
+    new_row.appendChild(downtd);
+    downtd.appendChild(downbtn);
+
+
+    // Highlighting the instances found in the text.
+    highlight(lemma,instance);
 
 }
 
@@ -173,22 +194,30 @@ function clear(){
 function cycle_answers(btn_id){
     
     
-
+    // Figuring out which label we're changing. Once we have the lemma, we can figure everything else out.
     var btn = document.getElementById(btn_id);
-    var lemma = btn.parentNode.firstChild.innerHTML;
-    
+    var lemma = btn.parentNode.parentNode.firstChild.innerHTML;
+    console.log(lemma)
 
-
+    // Retrieving what the count currently is at. 
     var count = answers_count_dict[lemma];
-    count +=1; 
-
-    answers_count_dict[lemma] = count;
-
+    console.log(count)
+    // picking our new translation.
     var translations = answers_dict[lemma];
+    console.log(translations)
+    // Incrementing the count. We can't let it get too large though.
+    if (count < translations.length -1){
+    count +=1; 
+    // setting the count.
+    answers_count_dict[lemma] = count;
+    }
+     
+    
+    
     var new_translation = translations[count];
 
     console.log(new_translation);
-
+    // Now we're actually going in and replacing the HTML
     var answer_elements_patt = /\'.*?\'/g
     var answer_elements = new_translation.match(answer_elements_patt)
     for (var i = 0; i < 4 ; i++){
@@ -200,10 +229,74 @@ function cycle_answers(btn_id){
 }
 
 
+function cycle_answers_back(btn_id){
+    
+    
+
+    // Figuring out which label we're changing. Once we have the lemma, we can figure everything else out.
+    var btn = document.getElementById(btn_id);
+    var lemma = btn.parentNode.parentNode.firstChild.innerHTML;
+    
+
+    // Retrieving what the count currently is at. 
+    var count = answers_count_dict[lemma];
+    
+    // We can't let the count go below zero.
+    if (count >= 1){
+        count -=1; 
+        // setting the count.
+       answers_count_dict[lemma] = count;
+    }
+ 
+
+    // picking our new translation.
+    var translations = answers_dict[lemma];
+    var new_translation = translations[count];
+
+    console.log(new_translation);
+
+    // Now we're actually replacing the HTML
+    var answer_elements_patt = /\'.*?\'/g
+    var answer_elements = new_translation.match(answer_elements_patt)
+    for (var i = 0; i < 4 ; i++){
+        var change_me_id = "\'" + lemma+ "\'" + (i+2).toString();
+        var change_me = document.getElementById( change_me_id )
+        change_me.innerHTML = answer_elements[i]
+    }
+
+}
+
+
+function highlight(lemma,instance){
+    // For some darn reason, there are apostraphes around the instances :(
+    lemma = lemma.replace(/\'/g,'');
+    instance = instance.replace(/\'/g,'');
+    var count = answers_count_dict[lemma]
+    var translation = answers_dict[lemma][count]
+    var answer_elements_patt = /\'.*?\'/g
+    var answer_elements = translation.match(answer_elements_patt)
+    var definition = answer_elements[0];
+    
+    console.log(definition);
+    // We don't want to look for the word in embedded contexts.
+    // !!! what if, what if the word is at the end of the document?
+    box = document.getElementById('input');
+    parse_me = box.innerHTML;
+    new_html = "<div class='tooltip' name='$' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>";
+    new_html = new_html.replace('$',instance);
+    new_html = new_html.replace('$',instance);
+    new_html = new_html.replace('$',definition);
+    var replace = new RegExp(instance,"gi");
+    parse_me = parse_me.replace(replace,new_html);
+    box.innerHTML=parse_me;
+} 
+
+
+
 $(function() {
     $('#Translate').bind('click', function() {
-      $.getJSON('/translate', {
-        input: $('#input').val(),
+        $.getJSON('/translate', {
+        input: document.getElementById("input").innerHTML,
       }, function(data) {
           retainer = (data.result).toString();
           clear()

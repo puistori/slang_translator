@@ -50,14 +50,17 @@ td{
   padding-bottom:0px; 
   margin-bottom:0px; 
 }
-#input{
-  height:300px;
-  width: 400px;
-}
+
 
 textarea{
     resize:none;
 }
+
+button{
+  color:orange;
+  border-radius : 5px;  
+}
+
 #Translate{
     border-radius: 25px;
     color:blue;  
@@ -93,4 +96,42 @@ body{
   margin-bottom: 0px;
   margin-top:0px; 
   margin-right:0px;
+}
+
+#input{
+  height:300px;
+  width: 400px;
+  background-color: whitesmoke;
+}
+
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+/* Here's the tooltip stuff */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: collapse;
+  width: 120px;
+  background-color:lightgray;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  color:blue;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

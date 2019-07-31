@@ -4,6 +4,7 @@ import sys
 sys.path.insert(1, 'core_files/Finnish Slang/')
 from finnish_translator import *
 from sumfin import sheppy
+import re
 
 
 
@@ -33,9 +34,17 @@ for old_key in med:
 def main():
     return render_template('main.html')
 
+@app.route("/css")
+def css():
+    return send_file("resources/main.css")
+
 @app.route("/translate")
 def translate():
     text = request.args.get('input',"",type=str)
+    text = clean_up_input(text)
+    print("string?")
+    print(text)
+    
     answer = translate_finnish(text,med)
     answer = str(answer)
     print('kester')
@@ -44,6 +53,10 @@ def translate():
     return jsonify(result=(answer))
     #return jsonify(result=text)
 
+
+@app.route("/test")
+def test():
+    return render_template('testing.html')
 
 @app.route("/pull",methods=['POST'])
 def pull():    
@@ -107,8 +120,17 @@ def valid_email(email):
                 return True
     # Return False otherwise.
     return False 
-    
 
+
+def clean_up_input(html_input):
+    # "<div class='tooltip' name='$' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>";
+    html_input = html_input.replace("<div class='tooltip' name=\'",'')
+    html_input = html_input.replace("\' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>", '')
+    html_input = html_input.replace("&nbsp;","")
+    html_input = html_input.replace("<div>","")
+    html_input= html_input.replace("</div>","")
+    html_input= html_input.replace("<br>","")
+    return html_input
 
 
 if __name__ == '__main__':
