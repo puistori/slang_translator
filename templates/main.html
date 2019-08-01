@@ -94,6 +94,7 @@ var retainer2;
 // erkat doesn't work for some reason :(  you'll have to look into this. !!!
 // !!! definitions that have () in them fuck you up
 // !!! starting with a space fucks you up :(
+// !!! eunukki eunukilla eunukki   -- paste that in, and 'eli' comes up as an option. wtf? lol
 // enää suggests entä as an answer. I'd hardcode this one out.
 // multiple entries of the same word cause problems.
 // The replace doesn't keep case. It doesn't really matter tbh, but it is technically an imperfection. 
@@ -111,6 +112,9 @@ var all_answers_patt = /: \[.*\]/
 var individual_answers_patt = /\(.*?\)/g 
 var answer_elements_patt = /\'.*?\'/g
 
+// this keeps track of lemmas we've done so far.
+var lemmas = []
+
 var words = json_in.match(words_patt)
 
 
@@ -120,9 +124,19 @@ for (var word of words){
 
     divided_keys = key.match(key_divider_patt);
     
-    lemma = divided_keys[0];
-    instance = divided_keys[1];
-    
+    lemma = divided_keys[0].replace(/\"/g,'').replace(/\'/g,'').trim();
+    instance = divided_keys[1].replace(/\"/g,'').replace(/\'/g,'').trim();
+    console.log("what are we on now?")
+    console.log(lemma)
+    console.log(instance)
+    console.log("lemmas!")
+    console.log(lemmas)
+    console.log("true or dare?")
+    console.log(quick_include(lemmas,lemma))
+    // First, we need to see if we've already done it.
+    if (quick_include(lemmas,lemma)==false){
+        console.log("confirm 0")
+        lemmas.push(lemma)
     // Now let's get all the answers.
 
     var all_answers = word.match(all_answers_patt)[0]
@@ -144,7 +158,8 @@ for (var word of words){
     lemma_td.id = lemma + '0';
     lemma_td.innerHTML = lemma.replace(/\'/g,"");
     new_row.appendChild(lemma_td);
-    var instance_td = document.createElement("TD");
+    var instance_td = document.
+    createElement("TD");
     instance_td.id = lemma + '1';
     instance_td.innerHTML = instance.replace(/\'/g,"");;
     new_row.appendChild(instance_td);
@@ -175,7 +190,44 @@ for (var word of words){
     downbtn.onclick= function() {cycle_answers_back(this.id)}; 
     new_row.appendChild(downtd);
     downtd.appendChild(downbtn);
+    }
+    else{
+        // So this lemma has been seen before. let's not give it a new entry, but we can update the 
+        // already existing entry.
+        console.log('confirm 1');
 
+        // accessing the dataslot
+        var instance_entry = document.getElementById(lemma+'1');
+        // first let's see if this instance has already been seen. If it has, let's not repeat.
+        
+        // If there were multiple entries so far, then we're dealing with a string that needs to be broken up by commas.
+        if ((instance_entry.innerHTML.includes(','))){  
+            console.log('confirm 2')
+            var instances = instance_entry.innerHTML.split(',')
+            var trimmed_instances = []
+            console.log(instances)
+            for (var trimmed_i ; trimmed_i < instances.length ; trimmed_i ++){
+                trimmed_instances.push(instances[trimmed_i].trim())
+            }
+            console.log(trimmed_instances);
+            if (quick_include(trimmed_instances,instance.replace(/\'/g,''))== false){
+                instance_entry.innerHTML = instance_entry.innerHTML + ', ' + instance.replace(/\'/g,'');
+            }
+        }
+        else{
+            console.log('confirm 3')
+            // In this case, we do have a current entry, but there has only been one instance so far seen.
+            // This is easier to parse :) Let's see if the instances are identical.
+            console.log(instance_entry.innerHTML.trim());
+            console.log(instance.replace(/\'/g,'').trim());
+            if ( !(instance_entry.innerHTML.trim() === instance.replace(/\'/g,'').trim()) ){
+                console.log("confirm 4");
+                instance_entry.innerHTML = instance_entry.innerHTML + ', ' + instance.replace(/\'/g,'');
+            }
+            
+
+        }
+    }
 
     // Highlighting the instances found in the text.
     highlight(lemma,instance);
@@ -291,7 +343,9 @@ function highlight(lemma,instance){
     box.innerHTML=parse_me;
 } 
 
-
+function quick_include(arr,obj) {
+    return (arr.indexOf(obj) != -1);
+}
 
 $(function() {
     $('#Translate').bind('click', function() {

@@ -121,15 +121,21 @@ def valid_email(email):
     # Return False otherwise.
     return False 
 
-
+# This is very sloppily done, sorry. but basically, all of the extra HTML that gets inserted in order for me to have the highlighting and the tooltip
+# basically will end up being part of the input for the translation function. We gotta get rid of it so that we're dealing with just good old normal text.
 def clean_up_input(html_input):
+
     # "<div class='tooltip' name='$' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>";
-    html_input = html_input.replace("<div class='tooltip' name=\'",'')
-    html_input = html_input.replace("\' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>", '')
+    html_input = html_input.replace('<div class=\"tooltip\" name=\"','')
+    html_input = html_input.replace("\" readonly><mark>$</mark><span class=\"tooltiptext\">$</span></div>", '')
+    html_input = re.sub(r"\" readonly=\"\"><mark>.*?<\/mark><span class=\"tooltiptext\">.*?'</span>", '', html_input)
+    html_input = re.sub(r"div class='tooltip'","",html_input)
+    html_input = re.sub(r"<span class='tooltiptext'>.*?</span>","",html_input)
     html_input = html_input.replace("&nbsp;","")
     html_input = html_input.replace("<div>","")
     html_input= html_input.replace("</div>","")
     html_input= html_input.replace("<br>","")
+
     return html_input
 
 
