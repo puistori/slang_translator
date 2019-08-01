@@ -3,7 +3,7 @@ from jinja2 import Template
 import sys
 sys.path.insert(1, 'core_files/Finnish Slang/')
 from finnish_translator import *
-from sumfin import sheppy
+#from sumfin import sheppy
 import re
 
 
@@ -77,7 +77,45 @@ def add_numbers():
 def index():
     return render_template('index.html')
 
+@app.route('/introENG',methods=['POST'])
+def intro_eng():
+    # I'm not closing any of these files . . . is that a problem?
+    intro = ""
+    file = open('text/intro.txt','rt').readlines()
+    for line in file:
+        intro += line
+    
 
+    p2 = ""
+    file = open('text/p2_eng.txt','rt').readlines()
+    for line in file:
+        p2 += line
+    
+
+    p3 = ""
+    file = open('text/p3_eng.txt','rt').readlines()
+    for line in file:
+        p3 += line
+    
+
+    p4 = ""
+    file = open('text/p4_eng.txt','rt').readlines()
+    for line in file:
+        p4 += line
+    
+
+    p5 = ""
+    file = open('text/p5_eng.txt','rt').readlines()
+    for line in file:
+        p5 += line
+    
+
+    headers = []
+    file = open('text/headers_eng.txt','rt').readlines()
+    for line in file:
+        headers.append(line)
+    
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers))
 
 
 

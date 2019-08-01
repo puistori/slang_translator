@@ -8,42 +8,25 @@
     <label>På Svenska</label>
 </div>
 
-<h1>Welcome to the Finnish Slang Translator!</h1>
+<h1 id='welcome'></h1>
 
 <div class='main'>
 <div class='row'>
     <div class='column-left'>
 
         
-        <h2>About</h2>
-        <p>The Finnish Slang translator is a translation tool that provides the
-            definitions of Finnish Slang words that are found within a given text.
-            This tool is meant to help intermediate and advanced students of the 
-            Finnish language, and it presupposes that the user understands standard
-            Finnish quite well, because the translations are provided in Finnish. 
+        <h2 id='about'></h2>
+        <p id='intro'>
+            The intro goes here (If you're reading this, something went wrong with the ajax call)
         </p>
-        <p> All of the definitions here are taken from the Finnish Urban dictionary,
-            the link to which is here : <a> urbaanisanakirja.com </a> These definitions are 
-            provided by private individuals who have made themselves part of that commmunity.
-            For that reason, some definitions may be more or less accurate - so a plus / minus 
-            rating is provided next to each translation, and an option to cycle through different 
-            definitions is provided, if multiple translations were suggested. Due to the sourcing 
-            of the definitions, if a slang word isn't on that website, it won't be translated by the app.
-            All rights to the content exclusively belong to urbaanisanakirja.com. 
-
+        <p id='p2'> 
         </p>
 
-        <p> For the time being, this translator only translates Slang for the Finnish language.
-            However, I would like to add multiple langauges to this app. If you know of a language 
-            that you would like to be added, and you think you have the resources to help, send 
-            an email to takaisin140116@gmail.com. Or if you have any other comments or questions, please
-            direct them to that email.
+        <p id='p3'> 
         </p>
-        <p> Thank you for enjoying the app! </p>
-        <h2>Instructions</h2>
-        <p> Using this translator is simple. Enter the text you wish to translate into the box,
-            and then hit submit. All words in the text that were found to be slang words will 
-            have their translations rendered in the bottom. 
+        <p id='p4' > </p>
+        <h2 id='instructions'></h2>
+        <p id='p5'> 
         </p>
 
 
@@ -85,6 +68,30 @@
 
 <script>
 
+// Loading text :) 
+
+console.log("you ran this - right?")
+var text = $.post('/introENG');
+text.done(function(data){
+    console.log("changes canknbe sein")
+    console.log(data.headers)
+    console.log(typeof data.headers)
+    console.log(Object.getOwnPropertyNames(data.headers));
+    console.log(data.headers[0])
+    console.log(data.headers[1])
+    console.log(data.headers[2])
+
+    document.getElementById('welcome').innerHTML=data.headers[0];
+    document.getElementById('about').innerHTML=data.headers[1];
+    document.getElementById('intro').innerHTML=data.intro;
+    document.getElementById('p2').innerHTML=data.p2;
+    document.getElementById('p3').innerHTML=data.p3;
+    document.getElementById('p4').innerHTML=data.p4;
+    document.getElementById('instructions').innerHTML=data.headers[2];
+    document.getElementById('p5').innerHTML=data.p5;
+
+})
+
 
 var answers_dict = {};
 var answers_count_dict = {};
@@ -93,6 +100,7 @@ var retainer2;
 
 // erkat doesn't work for some reason :(  you'll have to look into this. !!!
 // !!! definitions that have () in them fuck you up
+// eunukkia shows up as eunukki in the instance thing :(
 // !!! starting with a space fucks you up :(
 // !!! eunukki eunukilla eunukki   -- paste that in, and 'eli' comes up as an option. wtf? lol
 // enää suggests entä as an answer. I'd hardcode this one out.
