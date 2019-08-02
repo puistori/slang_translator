@@ -1,0 +1,3 @@
+Using this translator is simple. Enter the text you wish to translate into the box,
+and then hit submit. All words in the text that were found to be slang words will 
+have their translations rendered in the bottom. 

@@ -30,13 +30,25 @@ for old_key in med:
     med[new_key] = med.pop(old_key)
 
 
-@app.route("/main")
-def main():
-    return render_template('main.html')
+@app.route("/main/eng")
+def main_eng():
+    return render_template('main.html',lang_code="eng")
+@app.route("/main/sve")
+def main_sve():
+    return render_template('main.html',lang_code="sve")
+@app.route("/main/suo")
+def main_suo():
+    return render_template('main.html',lang_code="suo")
 
-@app.route("/css")
+
+@app.route("/main/css")
 def css():
     return send_file("resources/main.css")
+
+
+
+
+
 
 @app.route("/translate")
 def translate():
@@ -77,47 +89,139 @@ def add_numbers():
 def index():
     return render_template('index.html')
 
-@app.route('/introENG',methods=['POST'])
+@app.route('/ENG',methods=['POST'])
 def intro_eng():
     # I'm not closing any of these files . . . is that a problem?
     intro = ""
-    file = open('text/intro.txt','rt').readlines()
+    file = open('text/eng/intro.txt','rt',encoding='utf8').readlines()
     for line in file:
         intro += line
     
 
     p2 = ""
-    file = open('text/p2_eng.txt','rt').readlines()
+    file = open('text/eng/p2.txt','rt',encoding='utf8').readlines()
     for line in file:
         p2 += line
     
 
     p3 = ""
-    file = open('text/p3_eng.txt','rt').readlines()
+    file = open('text/eng/p3.txt','rt',encoding='utf8').readlines()
     for line in file:
         p3 += line
     
 
     p4 = ""
-    file = open('text/p4_eng.txt','rt').readlines()
+    file = open('text/eng/p4.txt','rt',encoding='utf8').readlines()
     for line in file:
         p4 += line
     
 
     p5 = ""
-    file = open('text/p5_eng.txt','rt').readlines()
+    file = open('text/eng/p5.txt','rt',encoding='utf8').readlines()
     for line in file:
         p5 += line
     
 
     headers = []
-    file = open('text/headers_eng.txt','rt').readlines()
+    file = open('text/eng/headers.txt','rt',encoding='utf8').readlines()
     for line in file:
         headers.append(line)
+    labels = []
+    file = open('text/eng/labels.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        labels.append(line)
     
-    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers))
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
 
+@app.route('/SVE',methods=['POST','GET'])
+def intro_sve():
+    # I'm not closing any of these files . . . is that a problem?
+    intro = ""
+    file = open('text/sve/intro.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        intro += line
+    
 
+    p2 = ""
+    file = open('text/sve/p2.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p2 += line
+    
+
+    p3 = ""
+    file = open('text/sve/p3.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p3 += line
+    
+
+    p4 = ""
+    file = open('text/sve/p4.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p4 += line
+    
+
+    p5 = ""
+    file = open('text/sve/p5.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p5 += line
+    
+
+    headers = []
+    file = open('text/sve/headers.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        headers.append(line)
+
+    labels = []
+    file = open('text/sve/labels.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        labels.append(line)
+
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
+
+@app.route('/SUO',methods=['POST','GET'])
+def intro_suo():
+    # I'm not closing any of these files . . . is that a problem?
+    intro = ""
+    file = open('text/suo/intro.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        intro += line
+    
+
+    p2 = ""
+    file = open('text/suo/p2.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p2 += line
+    
+
+    p3 = ""
+    file = open('text/suo/p3.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p3 += line
+    
+
+    p4 = ""
+    file = open('text/suo/p4.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p4 += line
+    
+
+    p5 = ""
+    file = open('text/suo/p5.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p5 += line
+    
+
+    headers = []
+    file = open('text/suo/headers.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        headers.append(line)
+
+    labels = []
+    file = open('text/suo/labels.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        labels.append(line)
+
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
 
 #everything down here is just me goofing around as I learn
 @app.route("/floop")

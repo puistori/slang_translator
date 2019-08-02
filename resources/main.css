@@ -85,8 +85,8 @@ h1{
   border-bottom:4px solid grey;
   font-family: 'Menlo-Regular, Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif'
 }
-label{
-  color:blue;
+.navbar a{
+  color:gold;
   text-decoration:underline;
   text-decoration-skip: unset;
 }

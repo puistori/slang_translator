@@ -1,0 +1,5 @@
+Den Finska Slangords Översättaren är ett översättningsverktyg som ger 
+betydelserna för alla Finska slangord som finns i en viss text. 
+Den här hjälpmedeln finns till för att hjälpa de som redan kan språket 
+på en tämligen hög eller mer avancerad nivå. Det förutsätter att användaren 
+kan standardspråket måttligt bra därför att alla betydelserna är på finska. 

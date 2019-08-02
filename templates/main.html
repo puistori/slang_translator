@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
 <html>
+<p id="lang_code">{{lang_code}}</p>
 <link rel="stylesheet" type="text/css" href="css">
 <div class='navbar'>
-    <label for="">In English</label><span> </span>
-    <label>Suomeksi</label><span> </span>
-    <label>På Svenska</label>
+    <a href='/main/eng'>In English</a><span> </span>
+    <a href='/main/suo'>Suomeksi</a><span> </span>
+    <a href='/main/sve'>På Svenska</a>
 </div>
 
 <h1 id='welcome'></h1>
@@ -32,7 +33,7 @@
 
     </div>
     <div class='column-right'>
-        <div contenteditable="true" id="input" placeholder='Insert text here'></div>
+        <div contenteditable="true" id="input" placeholder=' Enter Text Here '></div>
         <br>
         <input type='submit' value="Translate", id="Translate">
         <p id="result"></p>
@@ -40,14 +41,15 @@
         <table id='answers'>
             <thead>
             <tr>
-                <th>Lemma</th>
-                <th>Instance</th>
-                <th>Definition</th>
-                <th>Examples</th>
-                <th>Upvotes</th>
-                <th>Downvotes</th>
-                <th>Cycle Up</th>
-                <th>Cycle Down</th>
+                <th id='rootword'></th>
+                <th id='instance'></th>
+                <th id='definition'></th>
+                <th id='examples'></th>
+                <th id='upvotes'></th>
+                <th id='downvotes'></th>
+                <th id='cycle_up'></th>
+                <th id='cycle_down'></th>
+                <th id='report'></th>
             </tr>
             </thead>
             <tbody id='answers_body'>
@@ -64,15 +66,32 @@
 
 </html>
 
-<script src="static/jquery.js"></script>
+<script src="../static/jquery.js"></script>
 
 <script>
 
 // Loading text :) 
 
 console.log("you ran this - right?")
-var text = $.post('/introENG');
+var lang = document.getElementById('lang_code').innerHTML;
+var text_data;
+console.log(lang)
+// Selecting Language . . . 
+if (lang === "eng"){
+    console.log("Ok man, I guess it's english ")
+    var text = $.post('/ENG');
+}
+else if (lang === "suo"){
+    console.log("suo! listen up lol")
+    var text = $.post('/SUO');
+}
+else if (lang === "sve"){
+    console.log("Sve! lol listen up")
+    var text = $.post('/SVE');
+}
 text.done(function(data){
+    text_data = data;
+    
     console.log("changes canknbe sein")
     console.log(data.headers)
     console.log(typeof data.headers)
@@ -81,14 +100,31 @@ text.done(function(data){
     console.log(data.headers[1])
     console.log(data.headers[2])
 
+    //Headers
     document.getElementById('welcome').innerHTML=data.headers[0];
     document.getElementById('about').innerHTML=data.headers[1];
     document.getElementById('intro').innerHTML=data.intro;
+    // Body
     document.getElementById('p2').innerHTML=data.p2;
     document.getElementById('p3').innerHTML=data.p3;
     document.getElementById('p4').innerHTML=data.p4;
     document.getElementById('instructions').innerHTML=data.headers[2];
     document.getElementById('p5').innerHTML=data.p5;
+    // Labels
+    console.log("the labels lol")
+    console.log(data.labels)
+    // for some reason beyond me, this line only worked with jquery :/ 
+    $('#input').attr('placeholder',data.labels[0]);
+    document.getElementById('Translate').value = data.labels[1];
+    document.getElementById('rootword').innerHTML = data.labels[2];
+    document.getElementById('instance').innerHTML = data.labels[3];
+    document.getElementById('definition').innerHTML = data.labels[4];
+    document.getElementById('examples').innerHTML = data.labels[5];
+    document.getElementById('upvotes').innerHTML = data.labels[6];
+    document.getElementById('downvotes').innerHTML = data.labels[7];
+    document.getElementById('cycle_up').innerHTML = data.labels[8];
+    document.getElementById('cycle_down').innerHTML = data.labels[9];
+    document.getElementById('report').innerHTML = data.labels[10];
 
 })
 
@@ -102,6 +138,7 @@ var retainer2;
 // !!! definitions that have () in them fuck you up
 // eunukkia shows up as eunukki in the instance thing :(
 // !!! starting with a space fucks you up :(
+// !!! eunukki erkka won't work when re-inserted. :( 
 // !!! eunukki eunukilla eunukki   -- paste that in, and 'eli' comes up as an option. wtf? lol
 // enää suggests entä as an answer. I'd hardcode this one out.
 // multiple entries of the same word cause problems.
@@ -186,7 +223,7 @@ for (var word of words){
     var uptd = document.createElement("TD");
     var upbtn = document.createElement("BUTTON");
     upbtn.id = lemma+(6).toString();
-    upbtn.innerHTML = "Next"
+    upbtn.innerHTML = text_data.labels[8];
     upbtn.onclick= function() {cycle_answers(this.id)}; 
     new_row.appendChild(uptd);
     uptd.appendChild(upbtn);
@@ -194,10 +231,18 @@ for (var word of words){
     var downtd = document.createElement("TD");
     var downbtn = document.createElement("BUTTON");
     downbtn.id = lemma+(7).toString();
-    downbtn.innerHTML = "Previous"
+    downbtn.innerHTML = text_data.labels[9];
     downbtn.onclick= function() {cycle_answers_back(this.id)}; 
     new_row.appendChild(downtd);
     downtd.appendChild(downbtn);
+    // adding the report button.
+    var reptd = document.createElement("TD");
+    var repbtn = document.createElement("BUTTON");
+    repbtn.id = lemma + (8).toString();
+    repbtn.innerHTML = text_data.labels[10];
+    // !!! when you figure out the function, append it here.
+    new_row.appendChild(reptd);
+    reptd.appendChild(repbtn);
     }
     else{
         // So this lemma has been seen before. let's not give it a new entry, but we can update the 

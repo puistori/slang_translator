@@ -1,0 +1,5 @@
+For the time being, this translator only translates Slang for the Finnish language.
+However, I would like to add multiple langauges to this app. If you know of a language 
+that you would like to be added, and you think you have the resources to help, send 
+an email to takaisin140116@gmail.com. Or if you have any other comments or questions, please
+direct them to that email.
