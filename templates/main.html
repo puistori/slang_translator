@@ -135,6 +135,8 @@ var retainer;
 var retainer2;
 
 // erkat doesn't work for some reason :(  you'll have to look into this. !!!
+// The word 'an' gives a 'index out of bounds error ' in "lol, what is an eunukki?"  also this input :(  ok so everything seems like it's cool here ... umm ya
+// know, eunukki is a good word :)
 // !!! definitions that have () in them fuck you up
 // eunukkia shows up as eunukki in the instance thing :(
 // !!! starting with a space fucks you up :(
@@ -296,6 +298,20 @@ function clear(){
     }
 }
 
+// This helps get rid of unused tooltips and other HTML junk.
+var trigger = document.getElementById('input');
+trigger.addEventListener('input', function() {
+    console.log(trigger.innerHTML)
+    if (trigger.innerHTML === "<br>"){
+        trigger.innerHTML = ""
+    }
+    console.log('one chile')
+    
+    console.log(trigger.childNodes)
+});
+
+
+
 function cycle_answers(btn_id){
     
     
@@ -402,10 +418,19 @@ function quick_include(arr,obj) {
 
 $(function() {
     $('#Translate').bind('click', function() {
+        console.log("Here's what the inner HTML looks like, tbh")
+        // this is to get rid of old useless tooltips. It sends the caret position back, but that's not a big deal tbh. I think it would get sent back anyway.
+        var ipt = document.getElementById('input');
+        if (ipt.innerHTML.match(/<div class(?!(.*?(<mark>.*?<\/mark>))).*?<\/span><\/div>/g)){
+        // This has the annoying side-effect of replacing the caret position :/ but it doesn't seem like that big of a deal to be honest. 
+        ipt.innerHTML = ipt.innerHTML.replace(/<div class(?!(.*?(<mark>.*?<\/mark>))).*?<\/span><\/div>/g,'');
+        }
+        console.log(document.getElementById("input").innerHTML)
         $.getJSON('/translate', {
         input: document.getElementById("input").innerHTML,
       }, function(data) {
           retainer = (data.result).toString();
+          document.getElementById("input").innerHTML = data.cleaned_text;
           clear()
           set_up()
         //$("#result").text( (data.result).toString() );

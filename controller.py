@@ -49,20 +49,22 @@ def css():
 
 
 
-
+import sys 
 @app.route("/translate")
 def translate():
     text = request.args.get('input',"",type=str)
     text = clean_up_input(text)
     print("string?")
     print(text)
+    sys.stdout.flush()
+    
     
     answer = translate_finnish(text,med)
     answer = str(answer)
     print('kester')
     print(answer)
     print('kester')
-    return jsonify(result=(answer))
+    return jsonify(result=(answer),cleaned_text=(text))
     #return jsonify(result=text)
 
 
@@ -277,6 +279,8 @@ def clean_up_input(html_input):
     html_input = html_input.replace("<div>","")
     html_input= html_input.replace("</div>","")
     html_input= html_input.replace("<br>","")
+    html_input = html_input.replace('<span style="background-color: rgb(255, 255, 0);">','')
+    html_input = html_input.replace('</span>','')
 
     return html_input
 
