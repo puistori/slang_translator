@@ -1,4 +1,5 @@
 import pickle
+from lemmatizers import lemmatize_nominal,lemmatize_verb
 
 group1 = pickle.load(open('manyworded_entries/manyword_entries_g1','rb'))
 group1_second_members = pickle.load(open('manyworded_entries/manyword_entries_g1_second_pair_members','rb'))
@@ -41,20 +42,25 @@ def manyworded_stem_translator(candidate,history,text_instance):
                 return({(lemma,instance):answers})
     # Now let's see if it's in group2 - left branching madness.
     #!!! actually - watch out - you might be double-lemmatizing. 
-    if candidate in set(group2_last_words):
+    if candidate in group2_last_words:
+     
         # I assume there will only be one match anyway. 
         # Ok, so match is the final word of a group2 entry that matches up with our current word.
         # (this line is not necessary in the current implementation, I'm effectively just renaming the variable.)
         match =  candidate
         # For every idiom that word is a part of, let's see if the history matches up with it. If it does, then we have a match.
         for idiom in group2_last_words[match]:
+            print('the idiom is')
+            print(idiom)
             good_match = True
-            for i in range(len(idiom)-1):
-                corresponding_word_in_history = history[len(history)-i]
+            for i in range(len(idiom.split(' '))-1):
+                corresponding_word_in_history = history[(len(history)-1)-i]
                 split_idiom = idiom.split(' ')
                 # trim off the last word - we've already checked for that.
                 split_idiom = split_idiom[0:len(split_idiom)-1]
-                corresponding_word_in_idiom = split_idiom[len(split_idiom)-i]
+                corresponding_word_in_idiom = split_idiom[(len(split_idiom)-1)-i]
+
+                print(" %s in histroy vs %s in idiom "%(corresponding_word_in_history,corresponding_word_in_idiom))
 
                 if corresponding_word_in_idiom not in set(lemmatize_nominal(corresponding_word_in_history)):
                     #uh-oh, looks like there was a mismatch :( 
@@ -63,7 +69,7 @@ def manyworded_stem_translator(candidate,history,text_instance):
             if good_match:
                 # add her up!
                 lemma = idiom
-                instance = history[len(history)-(len(idiom)-1):].join(' ') + ' ' + text_instance
+                instance = ' '.join(history[len(history)-(len(idiom.split(' '))-1):]) + ' ' + text_instance
                 answers = group2[idiom]
                 return({(lemma,instance):answers})
     
@@ -79,6 +85,7 @@ def manyworded_stem_translator(candidate,history,text_instance):
     # Now let's see if it's in group 4.
 
     if candidate in group4_last_words:
+        print('no yeah, it was in group 4 tho lol')
         for idiom in group4_last_words[candidate]:
             good_match = True
             for i in range(len(idiom.split(' '))-1):
@@ -93,11 +100,10 @@ def manyworded_stem_translator(candidate,history,text_instance):
 
                 if corresponding_word_in_history != corresponding_word_in_idiom:
                     good_match = False
-                    print('i bwoke')
                     break
 
             if good_match:
-                # add her up! the lemma and the instance should be the same for this kind of entry.
+                # add her up! the lemma and the instance should be the same for this kind of entry. . . or maybe not. maybe you should change that.
                 answers = group4[idiom]
                 return({(idiom,idiom):answers})
 
@@ -119,8 +125,16 @@ print(answer)
 # group 2 entry
 
 print('\n')
-# black out & bongi muna
-history_g2 = ['haha','ok','wtf','lol','black']
-#answer = manyworded_stem_translator('out',history_g2,'out')
-print(group2['black out'])
-print(group2_last_words['out'])
+#  !!! black out & bongi muna . . . why isn't bongi muna there in group 2?
+history_g2 = ['haha','ok','wtf','lol','ikuinen']
+answer = manyworded_stem_translator('kaupunki',history_g2,'kaupungissa')
+print(answer)
+
+# group 1 entry
+
+print('group one, here we go!')
+history_g1 = ['you','know','that\'s','not','soitin']
+answer = manyworded_stem_translator('poskea',history_g1,'poskea')
+
+print(answer)
+
