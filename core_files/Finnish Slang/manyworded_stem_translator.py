@@ -1,3 +1,10 @@
+"""
+The function in this script is used in the finnish_translator function.
+This function allows our translator to detect manyword entries, i.e. entries that have multiple words, such as "voi ei!" and other idioms.
+It makes use of a variety of databases that correspond to the basic groups of manyword entries that I have discovered. For more information
+on those, read up about them in the manyworded_entry_grouper.py file
+"""
+
 import pickle
 from lemmatizers import lemmatize_nominal,lemmatize_verb
 
@@ -16,10 +23,22 @@ group4 = pickle.load(open('manyworded_entries/manyword_entries_g4','rb'))
 #!!! this shoudl be a dictionary.
 group4_last_words = pickle.load(open('manyworded_entries/manyword_entries_g4_last_words','rb'))
 
+manyword_stem_database = [group1,group1_second_members,group1_verbs,group2,group2_last_words,group3,group3_layer_2,group4,group4_last_words]
 
 #!!! what if you have a manyworded instance separated by a comma? e.g. 'voi, ei!' - I could see this causing some problems with the highlighting function
 
-def manyworded_stem_translator(candidate,history,text_instance):
+def manyworded_stem_translator(candidate,history,text_instance,databases):
+    # The very first thing we need to do is set up the databases. I decided to have them all be in a list.
+    group1 = databases[0]
+    group1_second_members = databases[1]
+    group1_verbs = databases[2]
+    group2 = databases[3]
+    group2_last_words = databases[4]
+    group3 = databases[5]
+    group3_layer_2 = databases[6]
+    group4 = databases[7]
+    group4_last_words = databases[8]
+
     # First, we need to see if it is in group 1. First, let's see if the current word would be a second word in one of those pairs.
     # I've assumed that the second word, which is the argument of the verb pair, will always have the same form. If I need to do
     # lemmatization work with it, then I would need to slightly redesign this function. But it would be a doable adjustment - I would just
@@ -50,8 +69,8 @@ def manyworded_stem_translator(candidate,history,text_instance):
         match =  candidate
         # For every idiom that word is a part of, let's see if the history matches up with it. If it does, then we have a match.
         for idiom in group2_last_words[match]:
-            print('the idiom is')
-            print(idiom)
+            #print('the idiom is')
+            #print(idiom)
             good_match = True
             for i in range(len(idiom.split(' '))-1):
                 corresponding_word_in_history = history[(len(history)-1)-i]
@@ -60,7 +79,7 @@ def manyworded_stem_translator(candidate,history,text_instance):
                 split_idiom = split_idiom[0:len(split_idiom)-1]
                 corresponding_word_in_idiom = split_idiom[(len(split_idiom)-1)-i]
 
-                print(" %s in histroy vs %s in idiom "%(corresponding_word_in_history,corresponding_word_in_idiom))
+                #print(" %s in histroy vs %s in idiom "%(corresponding_word_in_history,corresponding_word_in_idiom))
 
                 if corresponding_word_in_idiom not in set(lemmatize_nominal(corresponding_word_in_history)):
                     #uh-oh, looks like there was a mismatch :( 
@@ -85,7 +104,6 @@ def manyworded_stem_translator(candidate,history,text_instance):
     # Now let's see if it's in group 4.
 
     if candidate in group4_last_words:
-        print('no yeah, it was in group 4 tho lol')
         for idiom in group4_last_words[candidate]:
             good_match = True
             for i in range(len(idiom.split(' '))-1):
@@ -96,8 +114,7 @@ def manyworded_stem_translator(candidate,history,text_instance):
                 # trim off the last word - we've already checked for that.
                 split_idiom = split_idiom[0:len(split_idiom)-1]
                 corresponding_word_in_idiom = split_idiom[(len(split_idiom)-1)-i]
-                print(" %s in histroy vs %s in idiom "%(corresponding_word_in_history,corresponding_word_in_idiom))
-
+                #print(" %s in histroy vs %s in idiom "%(corresponding_word_in_history,corresponding_word_in_idiom))
                 if corresponding_word_in_history != corresponding_word_in_idiom:
                     good_match = False
                     break
@@ -111,7 +128,7 @@ def manyworded_stem_translator(candidate,history,text_instance):
 
 
 ## Now let's test this function
-
+"""
 # group 4 entry
 history_g4 =['haha','ok','nope','ladata','lyijyä']
 answer = manyworded_stem_translator('naamariin',history_g4,'naamariin')
@@ -138,3 +155,11 @@ answer = manyworded_stem_translator('poskea',history_g1,'poskea')
 
 print(answer)
 
+# bongi muna
+
+
+print('next test')
+history_take_1 = ['@x@', '@x@', '@x@', '@x@', 'euforia', 'paras', 'juttu', 'ja', 'totta', 'aamunen']
+answer = manyworded_stem_translator('kauhistus',history_take_1,'kauhistus',manyword_stem_database)
+print(answer)
+"""

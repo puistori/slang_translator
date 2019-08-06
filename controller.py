@@ -15,15 +15,39 @@ app = Flask(__name__)
 # This is a provisional database of acceptable email-password combos.
 # Random TODO list: prettify , testing
 
+# All of these are for finding manyword entries.
+group1 = pickle.load(open('manyworded_entries/manyword_entries_g1','rb'))
+group1_second_members = pickle.load(open('manyworded_entries/manyword_entries_g1_second_pair_members','rb'))
+group1_verbs = pickle.load(open('manyworded_entries/manyword_entries_g1_verbs','rb'))
+
+group2 = pickle.load(open('manyworded_entries/manyword_entries_g2','rb'))
+#!!! this should be a dictionary.
+group2_last_words = pickle.load(open('manyworded_entries/manyword_entries_g2_last_words','rb'))
+
+group3 = pickle.load(open('manyworded_entries/manyword_entries_g3','rb'))
+group3_layer_2 = pickle.load(open('manyworded_entries/manyword_entries_g3_layer_2','rb'))
+
+group4 = pickle.load(open('manyworded_entries/manyword_entries_g4','rb'))
+#!!! this shoudl be a dictionary.
+group4_last_words = pickle.load(open('manyworded_entries/manyword_entries_g4_last_words','rb'))
+
+manyword_stem_database = [group1,group1_second_members,group1_verbs,group2,group2_last_words,group3,group3_layer_2,group4,group4_last_words]
+
+
+
+
+
+
 ## hmm, am I allowed to put it here?
-file = open("core_files/Finnish Slang/assign1.3_out","rb")
+file = open("resources/slang_database","rb")
 sanalista = pickle.load(file)
 file.close()
+print("going ghost")
+print(type(sanalista))
+print(sanalista[list(sanalista.keys())[0]])
+print("done lol")
 
-med = {}
-
-for fru in sanalista:
-    med.update(fru)
+med = sanalista
 
 for old_key in med:
     new_key = old_key.lower()
@@ -59,7 +83,7 @@ def translate():
     sys.stdout.flush()
     
     
-    answer = translate_finnish(text,med)
+    answer = translate_finnish(text,med,manyword_stem_database)
     answer = str(answer)
     print('kester')
     print(answer)
@@ -283,6 +307,15 @@ def clean_up_input(html_input):
     html_input = html_input.replace('</span>','')
 
     return html_input
+
+
+print("Mick mulvaney is lame")
+
+unser = translate_finnish("euforia on paras juttu, ja totta, bongi muna",med,manyword_stem_database)
+
+for blip in unser:
+    print('a1 steak sauce')
+    print(blip)
 
 
 if __name__ == '__main__':

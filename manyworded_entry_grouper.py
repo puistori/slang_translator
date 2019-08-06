@@ -9,9 +9,9 @@ that are composed of more than one word, like "voi ei!". There are four groups t
 3. These are either/or entries, where the entry is meant to cover either one word or another, like "siftata / shiftata"
 
 4. These are whole idioms, like "voi ei!"
-
 """
 
+#!!! There may be something wrong with how it groups words into group 2 - for some reason, words ending in muna don't end up there :(
 
 import pickle
 import re
@@ -73,7 +73,7 @@ for key in database:
     # This first condition filters for all many-word entries. 
     if " " in key:
 
-        if 'black out' in key:
+        if 'muna' in key or 'kauhistus' in key:
             print("yeah, it passed this way. what of it?")
             print(key)
 
@@ -84,7 +84,7 @@ for key in database:
         # Filtering for words that start with a recognizable lemma. These words could fall into groups 1, 2, or 4.
         if stem in normal_words:
 
-            if 'black out' in key:
+            if 'muna' in key or 'kauhistus' in key:
                 print("yeah, it passed this way. part 1. what of it?")
                 print(key)
 
@@ -118,7 +118,7 @@ for key in database:
         # group 2 - searching for entries who end in a recognizable word.
         if key.split(' ')[len(key.split(' '))-1] in normal_words and found == False:
                 
-            if 'black out' in key:
+            if 'muna' in key or 'kauhistus' in key:
                 print("yeah, it passed this way. part 2. what of it?")
                 print(key)
                 print(key.split(' ')[len(key.split(' '))-1])
@@ -149,7 +149,7 @@ for key in database:
         # group 4
         if found == False:
                 group4_count += 1
-                if 'black out' in key:
+                if 'muna' in key or 'kauhistus' in key:
                     print("yeah, it passed this way into the second round. what of it?")
                     print(key)
                     print(key.split(' ')[len(key.split(' '))-1])

@@ -2,6 +2,12 @@
 This file represents the highest level control point in the library. 
 It makes use of the lemmatizers and the libraries to identify slang words in a given stream of text,
 and it returns their translations. 
+
+What this function returns in a more technical sense, is a list of mappings between lemma-instance tuples as the key
+and lists of answers as the values.
+
+e.g.  [ (lemma, instance) : [ [definition 1, examples, upvotes etc. . . ] , [definition 2, examples, upvotes etc. . . ] ] , (lemma2, instance) : ... ]
+
 """
 
 import pickle
@@ -9,6 +15,7 @@ import re
 from lists_and_dictionaries import common_spoken_language_words
 from lemmatizers import lemmatize_nominal,lemmatize_verb
 from basic_word_manipulation import remove_copies
+from manyworded_stem_translator import manyworded_stem_translator
 
   # loading in corpus
 """
@@ -27,7 +34,7 @@ for old_key in med:
 
 """
 
-def translate_finnish(text,reference):
+def translate_finnish(text,reference,databases):
     
     # First, tokenizing it into words.
     text = re.sub("[,\.\(\)\"\!\n\-\?\']"," ",text)
@@ -61,8 +68,16 @@ def translate_finnish(text,reference):
     master_list = []
     print(tokenized_text)
     for token_2 in tokenized_text:
-        mediating_list = list(lemmatize_nominal(token_2))
-        mediating_list +=  list(lemmatize_verb(token_2))
+        try:
+            mediating_list = list(lemmatize_nominal(token_2))
+        except:
+            print("Something went wrong trying to lemmatize a word as a nominal")
+            print("The word: %s"%(token_2))
+        try:
+            mediating_list +=  list(lemmatize_verb(token_2))
+        except:
+            print("Something went wrong trying to lemmatize a word as a verb")
+            print("The word: %s"%(token_2))
         mediating_list = [token_2]+mediating_list
         ###!!! there may be consequences to having the found form of the word not being the first one on the list... 
         ## maybe make sure that remove copies will leave it in the first slot?
@@ -73,6 +88,9 @@ def translate_finnish(text,reference):
 
     # If any of those possibilities happens to be a word in our slang dictionary, then we add it to our answers.
     answers = []
+    # we want to keep track of a stack of about 10 words or so, so that we can identify manyword-stems.
+    # History will be treated as a queue - with filo ordering. It will begin stocked with dummy words.
+    history = ["@x@","@x@","@x@","@x@","@x@","@x@","@x@","@x@","@x@","@x@"]
     for list_of_possible_lemmas in master_list:
         for possibility in list_of_possible_lemmas:
             print (possibility)
@@ -88,16 +106,31 @@ def translate_finnish(text,reference):
                     transformed_answer[3] = str(transformed_answer[3])
                     transformed_answer_content.append(tuple(transformed_answer))
 
+                # this object is a lemma-instance tuple mapped to a list of answers. 
                 answers.append({ (possibility, list_of_possible_lemmas[0])  : transformed_answer_content })
-    
+            else:
+                # Now we need to check if it's part of a maniworded stem. 
+                try:
+                    print('did this happen first?')
+                    print(history)
+                    manyword_stem = manyworded_stem_translator(possibility,history,list_of_possible_lemmas[0],databases) 
+                    if manyword_stem != None:
+                        answers.append(manyword_stem)
+
+                except Exception as e:
+                    print("Something went wrong when checking for a manyword-stem")
+                    print("Current Word: %s"%list_of_possible_lemmas[0])
+                    print("History: %s"%history)
+                    print(e)
+                    
+        # regardless of the result, we need to push this into the history. 
+        print(" or did this?")
+        history.append(list_of_possible_lemmas[0])
+        history.pop(0)
 
     return answers
 
 
-
-
-
-#print(translate_finnish("euforia on paras juttu",med))
 #print(sanalista)
 
 
