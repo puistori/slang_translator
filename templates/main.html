@@ -138,6 +138,10 @@ var retainer2;
 // The word 'an' gives a 'index out of bounds error ' in "lol, what is an eunukki?"  also this input :(  ok so everything seems like it's cool here ... umm ya
 // know, eunukki is a good word :)
 // !!! definitions that have () in them fuck you up
+// ja -->  gives a thing
+// nielaista pesukone doesn't load all the way . . . 
+// bongi doesn't load. 
+// a lot of entries seem to look like this : [('ajaa lapaan= runkata', '', 13, '3')]
 // eunukkia shows up as eunukki in the instance thing :(
 // !!! starting with a space fucks you up :(
 // !!! eunukki erkka won't work when re-inserted. :( 
@@ -156,7 +160,7 @@ var key_patt = /\{\(\'.*\', \'.*\'\):/
 var key_divider_patt = /'[^,]*?'/g
 
 var all_answers_patt = /: \[.*\]/
-var individual_answers_patt = /\(.*?\)/g 
+var individual_answers_patt = /\(.*?(\'|\")\d{1,2}(\'|\")\)/g 
 var answer_elements_patt = /\'.*?\'/g
 
 // this keeps track of lemmas we've done so far.
@@ -187,6 +191,8 @@ for (var word of words){
     // Now let's get all the answers.
 
     var all_answers = word.match(all_answers_patt)[0]
+    console.log('all the answes!')
+    console.log(all_answers)
     var individual_answers = all_answers.match(individual_answers_patt)
 
     // enter it into the dictionaries - you will need this to cycle through answers.
@@ -211,8 +217,8 @@ for (var word of words){
     instance_td.innerHTML = instance.replace(/\'/g,"");;
     new_row.appendChild(instance_td);
 
-
-
+    console.log('the individual answers are . . . ')
+    console.log(individual_answers)
     var answer_elements = individual_answers[0].match(answer_elements_patt);
     // Now we're actually placing the data in the HTML.
     for (var i = 0; i < 4 ; i++){
@@ -342,7 +348,8 @@ function cycle_answers(btn_id){
     var answer_elements_patt = /\'.*?\'/g
     var answer_elements = new_translation.match(answer_elements_patt)
     for (var i = 0; i < 4 ; i++){
-        var change_me_id = "\'" + lemma+ "\'" + (i+2).toString();
+        var change_me_id = lemma + (i+2).toString();
+        console.log(change_me_id)
         var change_me = document.getElementById( change_me_id )
         change_me.innerHTML = answer_elements[i]
     }
@@ -380,7 +387,7 @@ function cycle_answers_back(btn_id){
     var answer_elements_patt = /\'.*?\'/g
     var answer_elements = new_translation.match(answer_elements_patt)
     for (var i = 0; i < 4 ; i++){
-        var change_me_id = "\'" + lemma+ "\'" + (i+2).toString();
+        var change_me_id =  lemma + (i+2).toString();
         var change_me = document.getElementById( change_me_id )
         change_me.innerHTML = answer_elements[i]
     }
