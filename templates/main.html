@@ -248,6 +248,7 @@ for (var word of words){
     var repbtn = document.createElement("BUTTON");
     repbtn.id = lemma + (8).toString();
     repbtn.innerHTML = text_data.labels[10];
+    repbtn.onclick= function(){report_misslemmatization(lemma,instance,repbtn)}
     // !!! when you figure out the function, append it here.
     new_row.appendChild(reptd);
     reptd.appendChild(repbtn);
@@ -421,6 +422,40 @@ function highlight(lemma,instance){
 
 function quick_include(arr,obj) {
     return (arr.indexOf(obj) != -1);
+}
+
+function report_misslemmatization(lemma,instance,button) {
+    
+    if (button.innerHTML === "Reported!"){
+        console.log("yeah, you already clicked this haha")
+    }
+    else{
+        if (confirm("Are you sure you want to report this as incorrect?")){
+    button.innerHTML = "Reported!"
+    button.style.color = "white"
+    button.style.backgroundColor = "DarkGrey"
+    console.log("ok so lets see")
+    console.log(button)
+    console.log("anything?")
+    $.ajax({
+                url: '/report',
+                dataType: 'text',
+                data: {
+                    lemma:lemma,
+                    instance:instance,
+                },
+                success: function( data, textStatus, jQxhr ){
+                    console.log("hey man, you did it. you eally eally did it.")
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                    console.log( errorThrown );
+                }
+            });
+        }
+    else{
+        console.log("You cancelled lol")
+    }
+        }
 }
 
 $(function() {

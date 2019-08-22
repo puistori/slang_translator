@@ -5,7 +5,7 @@ sys.path.insert(1, 'core_files/Finnish Slang/')
 from finnish_translator import *
 #from sumfin import sheppy
 import re
-
+from pymongo import MongoClient 
 
 
 #from core_files.Finnish Slang. import translate_finnish
@@ -249,6 +249,24 @@ def intro_suo():
 
     return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
 
+@app.route("/report")
+def misslematizations():
+    
+    lemma= request.args.get('lemma', "no lemma", type=str)
+    instance = request.args.get('instance','no instance',type=str)
+
+    print("on wi go!")
+    print(request.args)
+    print(lemma)
+
+    mongo_client = MongoClient("mongodb+srv://puistori:gebit%40worker92@incidental-acquisition-caxuy.mongodb.net/test?retryWrites=true&w=majority")
+    db = mongo_client.SlangTranslator.wrong_lemmatizations
+    insert_this = {lemma:instance}
+    db.insert_one(insert_this)
+    
+    return('boo')
+
+
 #everything down here is just me goofing around as I learn
 @app.route("/floop")
 def floop():
@@ -277,6 +295,14 @@ It is by no means exhaustive, and is more than likely
 not necessary in the final version. 
 
 """
+
+
+def report_misslematization(lemma,instance):
+        mongo_client = MongoClient("mongodb+srv://puistori:gebit%40worker92@incidental-acquisition-caxuy.mongodb.net/test?retryWrites=true&w=majority")
+        db = mongo_client.SlangTranslator.wrong_lemmatizations
+        insert_this = {lemma:instance}
+        db.insert_one(insert_this)
+
 def valid_email(email):
     # Checking if it's long enough. There's no valid email shorter than 6
     if len(email) >5:
