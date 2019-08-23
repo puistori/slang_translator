@@ -1,3 +1,9 @@
-Using this translator is simple. Enter the text you wish to translate into the box,
-and then hit submit. All words in the text that were found to be slang words will 
-have their translations rendered in the bottom. 
+Det är enkelt att använda översättaren. Skriv den texten som du vill översätta
+inn i lådan som står till högern, och sen tryck på "Översätt" knappen när du är 
+färdig. Översättningarna till alla identifierade slangord ska återgivas i tabellen
+som står under textlådan. Alla deras förekomster ska understrykas, och man kan lätt se
+deras definitioner om man håller datormussen över dem understrukna orden. Till slut, om
+du ser att appen har givit fel ordrot, (till exempel, i texten står ordet "maidolla" och 
+appen påstår att dess rotord är "kirves" - som är fel ) så kan du  anmäla misstaget med att
+klicka på "Anmäla" knappen. Jag kommer isåfall notifieras, och det kommer att hjälpa mig 
+att förbättra och finslipa appen. 

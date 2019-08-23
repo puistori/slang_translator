@@ -1,3 +1,3 @@
 Using this translator is simple. Enter the text you wish to translate into the box,
-and then hit submit. All words in the text that were found to be slang words will 
-have their translations rendered in the bottom. 
+and then press the translate button. All words in the text that were found to be slang words will 
+have their translations rendered in the bottom, and all their occurences within the provided text will be highlighted. You can quickly see the definitions of words by hovering your mouse over the highlighted words. Lastly, if you see that the application has given the incorrect root form of a word (for example, your text has the word "maidolla" and the app says that its rootword is "kirves") then you can report the mistake by clicking the "report as wrong" button. I'll get a notification and this will help me streamline the application.  

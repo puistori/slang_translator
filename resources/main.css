@@ -136,3 +136,8 @@ body{
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+a {
+  color:blue;
+  text-decoration:underline;
+  }
