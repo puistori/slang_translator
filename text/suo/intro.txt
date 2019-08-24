@@ -1,5 +1,6 @@
-Tämä on jotain suomeksi The Finnish Slang translator is a translation tool that provides the
-definitions of Finnish Slang words that are found within a given text.
-This tool is meant to help intermediate and advanced students of the 
-Finnish language, and it presupposes that the user understands standard
-Finnish quite well, because the translations are provided in Finnish.
+Suomalaisen slangin kääntäjän on kääntämisen työkalu joka antaa 
+määritelmiä anetussa textissä löydetyille slangisanoille. Tämä 
+työkalu on tarkoitettu niille jotka jo osaavat Suomea melko hyvin, 
+kuten keski-tasolla ja korkealla tasolla oleville Suomen Kielen 
+opiskelijat. Niin, tämä työkalu edellyttää että käyttäjä jo osaa 
+jotain Suomea, koska kaikki määritelmät ovat suomeksi.

@@ -1,3 +1,9 @@
-Using this translator is simple. Enter the text you wish to translate into the box,
-and then hit submit. All words in the text that were found to be slang words will 
-have their translations rendered in the bottom. 
+Tämä sovellus on helppokäyttöinen. Kirjoita textin jota haluat kääntää siihen oikealla 
+olevaan laatikkoon, ja paina "Käännä" napin. Jokaisen textissäsi havaitun slangisanan
+määritlemä annetaan laatikon alla olevassa taulukossa. Jokainen löydös textissä myös
+alleviivattaan. Voit helposti ja nopeasti tarkistaa niiden määritelmä pitämällä
+tietokoneenhiiri sen päällä, sen sijaan että etsit sitä taulukosta. Jos näet että 
+kääntäjä on antanunt väärän perussana jollekulle sanalle, (esimerkiksi, tekstissäsi
+on sana "maidolla" ja kääntäjää väittää että sen perusmuoto on "kirves") voit 
+tehdä ilmoitus painamalla "ilmoita vääränä" napin. Sitten minä saan ilmoituksen,
+ja tämä tulee auttamaan minua korjaamaan ja hiomaan tämän sovelluksen.

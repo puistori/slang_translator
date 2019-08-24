@@ -1,8 +1,12 @@
-All of the definitions here are taken from the Finnish Urban dictionary,
-the link to which is here : <a> urbaanisanakirja.com </a> These definitions are 
-provided by private individuals who have made themselves part of that commmunity.
-For that reason, some definitions may be more or less accurate - so a plus / minus 
-rating is provided next to each translation, and an option to cycle through different 
-definitions is provided, if multiple translations were suggested. Due to the sourcing 
-of the definitions, if a slang word isn't on that website, it won't be translated by the app.
-All rights to the content exclusively belong to urbaanisanakirja.com. 
+Jokainen annettu määritelmä tulee suomalaisesta urbaanisankirjasta,
+jonka linkki on tässä : <a href="https://urbaanisanakirja.com/" target="_blank"> urbaanisanakirja.com </a>
+Määritelmät ovat tuon internettisivun yhteisössä osallistuvien 
+yksityishenkilöiden tarjoamat määritelmiä. Sen takia, jotkut 
+määritelmät saattavat olla enemmän tai vähemmän tarkkoja. Siksi,
+jokainen määritelmä on annettu sen arvostelun kanssa. Jos 
+tietty määritelmä selvästi ei sovi,on mahdollista katsoa
+muut vaihtoehdot painamalla "Seuraava" ja "Entinen" napit,
+jos muut vaihtoehdot ovat olemassa. Koska määritelmät tulevat
+siltä nettisivulta, jos tietty slangisana ei ole sillä sivulla, 
+niin ei se voida kääntää. Kaikki sisällön oikeudet kuuluvat 
+eksklusiivisesti sille nettisivun omistajille. 

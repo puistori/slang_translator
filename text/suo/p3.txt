@@ -1,5 +1,6 @@
-For the time being, this translator only translates Slang for the Finnish language.
-However, I would like to add multiple langauges to this app. If you know of a language 
-that you would like to be added, and you think you have the resources to help, send 
-an email to takaisin140116@gmail.com. Or if you have any other comments or questions, please
-direct them to that email.
+Tällä hetkellä, tämä kääntäjä voi kääntää ainoastaan suomalaista slangia. 
+Mutta, haluaisin mielelläni lisätä useita kieliä tähän sovellukseen. Jos
+mieleesi tulee kieli jonka kannattaa lisätä, ja jos voit auttaa siihen, 
+lähetä sähköpostiviesti tähän osoitteeseen : takaisin140116@gmail.com.
+Jos sinulla on muita kommenteja tai kysymyksiä, ole hyvä ja lähetä ne
+sinne.

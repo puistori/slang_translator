@@ -1,0 +1,6 @@
+Tässä alkuisessa vaiheessa, voi olla että kääntäjä ei parja todella hyvin 
+monisanoisten slangi-ilmausten kanssa, tai puhekielessä esiintyvien 
+taivutusmuotojen kanssa (kuten "kirjastos" sanan "kirjastossa" sijaan). 
+Saadaksesi parhaat tulokset, voit jälleenkirjoittaa ne monisanoisten 
+ilmausten perusmuodoissaan, ja puhekielen mukaan taivutetut voit
+jälleenkirjoittaa kirjakielen taivutusmuotojen kanssa.

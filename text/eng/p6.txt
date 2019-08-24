@@ -1,0 +1,9 @@
+In this early stage of the webapp, it may be that the 
+translator has some difficulty with many-worded slang
+expressions, or with the kinds of truncated inflections 
+that are sometimes seen in the spoken langauge (such as
+"kirjastos" instead of "kirjastossa"). In order to get the
+best results, you may want to rewrite the many-worded
+expressions in their baseform, and do the same for
+those with truncated inflections - or replace those
+with the full inflectional forms of the booklanguage. 

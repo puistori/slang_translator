@@ -53,6 +53,15 @@ for old_key in med:
     new_key = old_key.lower()
     med[new_key] = med.pop(old_key)
 
+# Hardcoded fixes - words to be ignored.
+ignore_us_file = open("resources/ignore_us.txt",'rt')
+ignore_us = set([])
+whitespace_ig = set([' ','','\n'])
+for line in ignore_us_file.readlines():
+        for entry in line.split(','):
+                if entry not in whitespace_ig:
+                        ignore_us.add(entry)
+
 
 @app.route("/main/eng")
 def main_eng():
@@ -140,12 +149,21 @@ def intro_eng():
     file = open('text/eng/p4.txt','rt',encoding='utf8').readlines()
     for line in file:
         p4 += line
-    
+
+    updated = ""
+    file = open('text/eng/updated.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        updated += line
 
     p5 = ""
     file = open('text/eng/p5.txt','rt',encoding='utf8').readlines()
     for line in file:
         p5 += line
+
+    p6 = ""
+    file = open('text/eng/p6.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p6 += line
     
 
     headers = []
@@ -157,7 +175,7 @@ def intro_eng():
     for line in file:
         labels.append(line)
     
-    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,p6=p6,headers=headers,labels=labels,updated=updated))
 
 @app.route('/SVE',methods=['POST','GET'])
 def intro_sve():
@@ -184,12 +202,21 @@ def intro_sve():
     file = open('text/sve/p4.txt','rt',encoding='utf8').readlines()
     for line in file:
         p4 += line
-    
+
+    updated = ""
+    file = open('text/sve/updated.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        updated += line    
 
     p5 = ""
     file = open('text/sve/p5.txt','rt',encoding='utf8').readlines()
     for line in file:
         p5 += line
+
+    p6 = ""
+    file = open('text/sve/p6.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p6 += line
     
 
     headers = []
@@ -202,7 +229,7 @@ def intro_sve():
     for line in file:
         labels.append(line)
 
-    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,p6=p6,headers=headers,labels=labels,updated=updated))
 
 @app.route('/SUO',methods=['POST','GET'])
 def intro_suo():
@@ -230,11 +257,20 @@ def intro_suo():
     for line in file:
         p4 += line
     
+    updated = ""
+    file = open('text/suo/updated.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        updated += line
 
     p5 = ""
     file = open('text/suo/p5.txt','rt',encoding='utf8').readlines()
     for line in file:
         p5 += line
+
+    p6 = ""
+    file = open('text/suo/p6.txt','rt',encoding='utf8').readlines()
+    for line in file:
+        p6 += line
     
 
     headers = []
@@ -247,7 +283,7 @@ def intro_suo():
     for line in file:
         labels.append(line)
 
-    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,headers=headers,labels=labels))
+    return (jsonify(intro=intro,p2=p2,p3=p3,p4=p4,p5=p5,p6=p6,headers=headers,labels=labels,updated=updated))
 
 @app.route("/report")
 def misslematizations():

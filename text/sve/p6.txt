@@ -1,0 +1,9 @@
+I det här tidiga skedet, det må vara att översättaren 
+inte funkar så bra med längre uttryck som består av mer
+än ett ord, eller med de böjningsformer som man ser ibland
+i talspråket (såsom "kirjastos" istället för "kirjastossa"). 
+För att få de bästa resultaten, du kan skriva om de uttryck 
+med många ord i sina grundformer (utan böjningar) och du kan 
+återskriva dem talspråks varianter med sina motsvarande 
+bokspråks böjningar (eller i sina grundformer, som är ännu
+bättre). 

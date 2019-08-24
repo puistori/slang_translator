@@ -26,8 +26,11 @@
         <p id='p3'> 
         </p>
         <p id='p4' > </p>
+        <p id='updated'></p>
         <h2 id='instructions'></h2>
         <p id='p5'> 
+        </p>
+        <p id='p6'> 
         </p>
 
 
@@ -108,8 +111,10 @@ text.done(function(data){
     document.getElementById('p2').innerHTML=data.p2;
     document.getElementById('p3').innerHTML=data.p3;
     document.getElementById('p4').innerHTML=data.p4;
+    document.getElementById('updated').innerHTML=data.updated;
     document.getElementById('instructions').innerHTML=data.headers[2];
     document.getElementById('p5').innerHTML=data.p5;
+    document.getElementById('p6').innerHTML=data.p6;
     // Labels
     console.log("the labels lol")
     console.log(data.labels)
