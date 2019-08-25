@@ -129,7 +129,8 @@ def add_numbers():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('main_eng'))
+
 
 @app.route('/ENG',methods=['POST'])
 def intro_eng():
