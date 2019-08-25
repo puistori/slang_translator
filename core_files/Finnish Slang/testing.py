@@ -1,5 +1,5 @@
 from lemmatizers import *
-from scraper import *
+#from scraper import *
 import re
 
 #print(lemmatize_nominal("helsingin"))
@@ -14,15 +14,7 @@ import re
 #print(lemmatize_verb("luin"))
 
 
-kaspar = set()
-kaspar.add(2)
-ksp = set("t")
-print(kaspar)
-print(ksp)
-
-kaspar.update(ksp)
-kaspar += ["w"]
-print(kaspar)
+print(lemmatize_nominal('jarkat'))
 #print(lemmatize_verb("saanut"))
 #print(nominal_stem_to_lemma("peetteke"))
 

@@ -45,7 +45,7 @@ partitive_singular_map = {"lta":["l","lta"],"ltä":["l","ltä"],"nta":["ni","n"]
 superlative_endings = ["n","mpia","mpiä","mpa","mpä","mpien","mma","mmä"]
 
 
-common_spoken_language_words = set(["etten","ettet","ettei","ettemme","ettette","et","en","mun","sun","ku","täl","viel",\
+common_spoken_language_words = set(["enää","etten","ettet","ettei","ettemme","ettette","et","en","mun","sun","ja","kun","täl","viel",\
                                 "vaik","oon","on","oo","ois","vaa","muutaki","nää","mä","sä","tä","tää",])
 
 

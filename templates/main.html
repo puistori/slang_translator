@@ -139,22 +139,11 @@ var answers_count_dict = {};
 var retainer;
 var retainer2;
 
-// erkat doesn't work for some reason :(  you'll have to look into this. !!!
-// The word 'an' gives a 'index out of bounds error ' in "lol, what is an eunukki?"  also this input :(  ok so everything seems like it's cool here ... umm ya
-// know, eunukki is a good word :)
-// !!! definitions that have () in them fuck you up
-// ja -->  gives a thing
-// nielaista pesukone doesn't load all the way . . . 
-// bongi doesn't load. 
+// nielaista pesukone's second definition has quotes around it and that's the only difference. weird.
+// bongi doesn't survive consonant gradation :( if you have bongissa, the machine probably thinks that only bonki is possible. 
 // a lot of entries seem to look like this : [('ajaa lapaan= runkata', '', 13, '3')]
-// eunukkia shows up as eunukki in the instance thing :(
-// !!! starting with a space fucks you up :(
-// !!! eunukki erkka won't work when re-inserted. :( 
-// !!! eunukki eunukilla eunukki   -- paste that in, and 'eli' comes up as an option. wtf? lol
-// enää suggests entä as an answer. I'd hardcode this one out.
-// multiple entries of the same word cause problems.
 // The replace doesn't keep case. It doesn't really matter tbh, but it is technically an imperfection. 
-// provide a limit to the upcycle
+// repasting in stuff sometimes keeps the HTML markup, which kinda sucks, but IDK if there's anything you can really do. 
 
 // This is the primary function for taking in the translations and putting them in the table.
 function set_up(){

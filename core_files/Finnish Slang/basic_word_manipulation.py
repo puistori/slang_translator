@@ -140,6 +140,7 @@ def consonant_gradation_harden(word):
         first_of_last = representation[len(representation)-1][0]
         last_of_second_to_last = representation[len(representation)-2][len(representation[len(representation)-2])-1]
         fusion = last_of_second_to_last + first_of_last
+        # This first condition checks for softenings that have two letters - like 'll' or 'mm'
         if fusion in softened_hash:
             if fusion in necessary_to_harden:
                 necessary_to_apply = True
@@ -152,7 +153,8 @@ def consonant_gradation_harden(word):
             #representation[len(representation) - 2][len(representation[len(representation) - 2]) - 1] = new_last_of_second_to_last
             for syllable in representation:
                 end_word += syllable
-        elif first_of_last in softened_hash and (last_of_second_to_last in vowels or last_of_second_to_last =='h'):
+        # This second condition checks for softenings that have one letter, like k, or t. 
+        elif first_of_last in softened_hash and (last_of_second_to_last in vowels or last_of_second_to_last in ['h','r']):
             if first_of_last in necessary_to_harden:
                 necessary_to_apply = True
             new_first_of_last = softened_hash[first_of_last]

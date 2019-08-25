@@ -107,6 +107,8 @@ def return_hard_loc(word):
 
 def return_hard_loc(word):
     end_list= []
+    # This finds out the match length between the regular expression and the word; 
+    # that is because the hard locatives dict has a mapping between regexes and the match length function.
     result = hard_locatives_dict.refer_to_function(word)
     if result != False:
         clipped_word = word[:len(word)-result]

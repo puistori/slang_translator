@@ -34,7 +34,7 @@ for old_key in med:
 
 """
 
-def translate_finnish(text,reference,databases):
+def translate_finnish(text,reference,databases,exact_matches=None,ignore_us=None):
     
     # First, tokenizing it into words.
     text = re.sub("[,\.\(\)\"\!\n\-\?\']"," ",text)
@@ -49,8 +49,14 @@ def translate_finnish(text,reference,databases):
             pass
         elif re.search("[0-9]",token):
             pass
+        ### !!! There is a problem with this condition and the one after that !!!!!! 
+        ### they don't allow these words to be part of the history of the sentence, which
+        ### won't allow them to be recognized if they form part of a manyworded stem.
         elif token in common_spoken_language_words:
             print("found that %s is a common spoken language thing"%token)
+        elif ignore_us != None and token in ignore_us:
+            #These are hardcoded corrections for misslematizations.
+            pass
         else:
             L.append(token)
     
@@ -68,16 +74,24 @@ def translate_finnish(text,reference,databases):
     master_list = []
     print(tokenized_text)
     for token_2 in tokenized_text:
-        try:
-            mediating_list = list(lemmatize_nominal(token_2))
-        except:
-            print("Something went wrong trying to lemmatize a word as a nominal")
-            print("The word: %s"%(token_2))
-        try:
-            mediating_list +=  list(lemmatize_verb(token_2))
-        except:
-            print("Something went wrong trying to lemmatize a word as a verb")
-            print("The word: %s"%(token_2))
+        # First, we want to see if it's an exact match. If it is, we don't need to try to lemmatize it!
+        if token_2 in reference:
+            mediating_list = []
+        elif exact_matches != None and token_2 in exact_matches:
+            mediating_list = []
+            print("this did go here! \n\n\n\n\n yes it did!")
+        else:
+            print("ok ok ok ok  but it didn't go here, did it . . ?")
+            try:
+                mediating_list = list(lemmatize_nominal(token_2))
+            except:
+                print("Something went wrong trying to lemmatize a word as a nominal")
+                print("The word: %s"%(token_2))
+            try:
+                mediating_list +=  list(lemmatize_verb(token_2))
+            except:
+                print("Something went wrong trying to lemmatize a word as a verb")
+                print("The word: %s"%(token_2))
         mediating_list = [token_2]+mediating_list
         ###!!! there may be consequences to having the found form of the word not being the first one on the list... 
         ## maybe make sure that remove copies will leave it in the first slot?
@@ -100,6 +114,19 @@ def translate_finnish(text,reference,databases):
                 # also, to make this dictionary more parsable in the javascript, I need to make sure that the up and down votes are represented both as strings.
                 transformed_answer_content = []
                 answer_content = reference[possibility]
+                for given_answer in answer_content:
+                    transformed_answer = list(given_answer)
+                    transformed_answer[2] = str(transformed_answer[2])
+                    transformed_answer[3] = str(transformed_answer[3])
+                    transformed_answer_content.append(tuple(transformed_answer))
+
+                # this object is a lemma-instance tuple mapped to a list of answers. 
+                answers.append({ (possibility, list_of_possible_lemmas[0])  : transformed_answer_content })
+            # Now let's check to see if it's in the "exact matches" category
+            elif exact_matches != None and possibility in exact_matches and possibility == list_of_possible_lemmas[0]:
+                #also, to make this dictionary more parsable in the javascript, I need to make sure that the up and down votes are represented both as strings.
+                transformed_answer_content = []
+                answer_content = exact_matches[possibility]
                 for given_answer in answer_content:
                     transformed_answer = list(given_answer)
                     transformed_answer[2] = str(transformed_answer[2])
@@ -133,5 +160,5 @@ def translate_finnish(text,reference,databases):
 
 #print(sanalista)
 
-
+print(lemmatize_nominal('turkat'))
 ## do lower case on the keys of the dictionary

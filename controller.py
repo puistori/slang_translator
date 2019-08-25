@@ -62,6 +62,9 @@ for line in ignore_us_file.readlines():
                 if entry not in whitespace_ig:
                         ignore_us.add(entry)
 
+exact_matches_file = open("resources/exact_matches",'rb')
+exact_matches = pickle.load(exact_matches_file)
+
 
 @app.route("/main/eng")
 def main_eng():
@@ -86,13 +89,17 @@ import sys
 @app.route("/translate")
 def translate():
     text = request.args.get('input',"",type=str)
+    print("no?")
+    print("\n\n\n\n")
+    print(text)
     text = clean_up_input(text)
     print("string?")
+    print("\n\n\n")
     print(text)
     sys.stdout.flush()
     
     
-    answer = translate_finnish(text,med,manyword_stem_database)
+    answer = translate_finnish(text,med,manyword_stem_database,exact_matches=exact_matches,ignore_us=ignore_us)
     answer = str(answer)
     print('kester')
     print(answer)
@@ -355,6 +362,8 @@ def valid_email(email):
 # basically will end up being part of the input for the translation function. We gotta get rid of it so that we're dealing with just good old normal text.
 def clean_up_input(html_input):
 
+    # All of these replacements were motivated by dealing with HTML code that was injected 
+    # by my own application, when it tried to make tooltips and stuff. 
     # "<div class='tooltip' name='$' readonly><mark>$</mark><span class='tooltiptext'>$</span></div>";
     html_input = html_input.replace('<div class=\"tooltip\" name=\"','')
     html_input = html_input.replace("\" readonly><mark>$</mark><span class=\"tooltiptext\">$</span></div>", '')
@@ -368,6 +377,10 @@ def clean_up_input(html_input):
     html_input = html_input.replace('<span style="background-color: rgb(255, 255, 0);">','')
     html_input = html_input.replace('</span>','')
 
+    #These replacements are motivated by dealing with HTML code that got copy and pasted in from other websites
+    #genius.com
+    html_input = re.sub(r"<span style=.*?>","",html_input)
+    html_input = re.sub(r"<br style=.*?>","\n",html_input)
     return html_input
 
 

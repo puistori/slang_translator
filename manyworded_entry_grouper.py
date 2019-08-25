@@ -170,43 +170,43 @@ print(other_count)
 #print(group1,group2,group3,group4)
 
 
-g1 = open('manyword_entries_g1','wb')
+g1 = open('manyworded_entries/manyword_entries_g1','wb')
 pickle.dump(group1,g1)
 g1.close()
 
-g1_v = open('manyword_entries_g1_verbs','wb')
+g1_v = open('manyworded_entries/manyword_entries_g1_verbs','wb')
 pickle.dump(group1_verbs,g1_v)
 g1_v.close()
 
 
-g1_second_pair_members = open('manyword_entries_g1_second_pair_members','wb')
+g1_second_pair_members = open('manyworded_entries/manyword_entries_g1_second_pair_members','wb')
 pickle.dump(group1_second_pair_members,g1_second_pair_members)
 g1_second_pair_members.close()
 
 
-g2 = open('manyword_entries_g2','wb')
+g2 = open('manyworded_entries/manyword_entries_g2','wb')
 pickle.dump(group2,g2)
 g2.close()
 
 
-g2_last_words = open('manyword_entries_g2_last_words','wb')
+g2_last_words = open('manyworded_entries/manyword_entries_g2_last_words','wb')
 pickle.dump(group2_last_words,g2_last_words)
 g2_last_words.close()
 
 
-g3 = open('manyword_entries_g3','wb')
+g3 = open('manyworded_entries/manyword_entries_g3','wb')
 pickle.dump(group3,g3)
 g3.close()
 
-g3_layer_2 = open('manyword_entries_g3_layer_2','wb')
+g3_layer_2 = open('manyworded_entries/manyword_entries_g3_layer_2','wb')
 pickle.dump(group3_second_layer,g3_layer_2)
 g3_layer_2.close()
 
-g4 = open('manyword_entries_g4','wb')
+g4 = open('manyworded_entries/manyword_entries_g4','wb')
 pickle.dump(group4,g4)
 g4.close()
 
-g4_last_words = open('manyword_entries_g4_last_words','wb')
+g4_last_words = open('manyworded_entries/manyword_entries_g4_last_words','wb')
 pickle.dump(group4_last_words,g4_last_words)
 g4_last_words.close()
 
