@@ -1,6 +1,35 @@
+import logging
 from flask import Flask, render_template, request, redirect , jsonify, json, Response, url_for, send_file
-from jinja2 import Template
 import sys
+
+
+#from core_files.Finnish Slang. import translate_finnish
+# !!! oiko gives aa ... :(
+app = Flask(__name__)
+# setting up logging
+
+app.debug = True
+
+# Configure logging.
+app.logger.setLevel(logging.DEBUG)
+del app.logger.handlers[:]
+
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setLevel(logging.DEBUG)
+handler.formatter = logging.Formatter(
+    fmt=u"%(asctime)s level=%(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+)
+app.logger.addHandler(handler)
+
+
+
+# This is a provisional database of acceptable email-password combos.
+# Random TODO list: prettify , testing
+
+
+
+from jinja2 import Template
 sys.path.insert(1, 'core_files/Finnish Slang/')
 from finnish_translator import *
 #from sumfin import sheppy
@@ -8,12 +37,6 @@ import re
 from pymongo import MongoClient 
 
 
-#from core_files.Finnish Slang. import translate_finnish
-# !!! oiko gives aa ... :(
-app = Flask(__name__)
-
-# This is a provisional database of acceptable email-password combos.
-# Random TODO list: prettify , testing
 
 # All of these are for finding manyword entries.
 group1 = pickle.load(open('manyworded_entries/manyword_entries_g1','rb'))
