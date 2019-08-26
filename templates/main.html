@@ -144,6 +144,8 @@ var retainer2;
 // a lot of entries seem to look like this : [('ajaa lapaan= runkata', '', 13, '3')]
 // The replace doesn't keep case. It doesn't really matter tbh, but it is technically an imperfection. 
 // repasting in stuff sometimes keeps the HTML markup, which kinda sucks, but IDK if there's anything you can really do. 
+// eunukki I fails, so does me I. i think if an instance of one word is found inside the tooltip of another, you'll be getting serious fails during the highlighting.
+
 
 // This is the primary function for taking in the translations and putting them in the table.
 function set_up(){
@@ -409,7 +411,9 @@ function highlight(lemma,instance){
     new_html = new_html.replace('$',instance);
     new_html = new_html.replace('$',instance);
     new_html = new_html.replace('$',definition);
-    var replace = new RegExp(instance,"gi");
+    
+    var replace = new RegExp('(?<![A-Za-z0-9_])'+instance+'(?![A-Za-z0-9_])',"gmi")
+    //var replace = new RegExp(instance,"gim");
     parse_me = parse_me.replace(replace,new_html);
     box.innerHTML=parse_me;
 } 
@@ -452,6 +456,107 @@ function report_misslemmatization(lemma,instance,button) {
         }
 }
 
+function clean_span_tags(string){
+    var cleaned_string = string;
+    var spiff_regex = /<span(?! class=('|")tooltiptext('|"))(.*?>)(.*?)<\/span>/gi
+    let matches = Array.from( string.matchAll(spiff_regex) )
+    var i = 0;
+    
+    while (typeof matches[i] !== "undefined"){
+        cleaned_string = cleaned_string.replace(matches[i][0],matches[i][4])
+        
+        //console.log("doing an iteration")
+        //console.log("this is what is here")
+        //console.log(matches[i])
+        i++;
+        //console.log("this is what is next")
+        //console.log(matches[i])
+    }
+    
+    //console.log(matches[0][4]);
+    //console.log(matches[0][0]);
+    return (cleaned_string);
+}
+
+function clean_br_tags(string){
+    var br_regex = /<br(.*?)>/gi;
+    return string.replace(br_regex," ");
+    string = string.replace(/<div>/gi,"\n").replace(/<\/div>/gi," ")
+    // In firefox, we get left with a newline character at the start after doing this.
+    // So I'll just say, look, if the first character is a newline character, sorry, we can't have that.
+    if (string[0] === "\n"){
+        string.replace("\n","")[0]
+    }
+    return (string)
+}
+/*
+function clean_div_tags(string){
+    var div_regex = /<div(?! class=('|")tooltip('|") name=)(.){1,}?>(.*?)<\/div>/gi
+    var cleaned_string = string;
+    let matches = Array.from( string.matchAll(div_regex) )
+    var i = 0;
+    
+    while (typeof matches[i] !== "undefined"){
+        cleaned_string = cleaned_string.replace(matches[i][0],matches[i][4])
+        
+        console.log("doing an iteration")
+        console.log("this is what is here")
+        console.log(matches[i])
+        i++;
+        console.log("this is what is next")
+        console.log(matches[i])
+    }
+    
+    //console.log(matches[0][4]);
+    //console.log(matches[0][0]);
+    return (cleaned_string);
+
+}
+*/
+// gets rid of the front part of a div tag that is both NOT 
+// one of my tooltip div tags, and also is not a plain empty divtag.
+function clean_div_tags(string){
+    console.log("and here is the trezhure");
+    console.log(string);
+    var div_regex = /<div(?! class=('|")tooltip('|") name=)(.*?)>/gi
+    var cleaned_string = string;
+    cleaned_string = cleaned_string.replace(div_regex," ");
+    console.log("die ausput")
+    console.log(cleaned_string)
+    return (cleaned_string);
+
+}
+
+// handling paste-ins ; when text is pasted in, it will now get cleaned up to get rid of all pesky color tags and what not.
+/*
+document.getElementById("input").addEventListener("input", function() {
+    console.log("input event fired");
+    var string = document.getElementById("input").innerHTML;
+    string = clean_span_tags(string);
+    string = clean_br_tags(string);
+    document.getElementById("input").innerHTML = string;  
+}, false);
+*/
+
+
+
+function paste_clean(){
+    console.log("paste event fired");
+    
+    setTimeout(function(){     
+    console.log("ok, firsties, thsi is what we haved")
+    console.log(document.getElementById("input").innerHTML)    
+    var string = document.getElementById("input").innerHTML;
+    string = clean_span_tags(string);
+    string = clean_div_tags(string);
+    string = clean_br_tags(string);
+    document.getElementById("input").innerHTML = string;
+
+    }, 4)
+    console.log("yehhh ok");
+}
+document.getElementById("input").onpaste = paste_clean;
+
 $(function() {
     $('#Translate').bind('click', function() {
         console.log("Here's what the inner HTML looks like, tbh")
@@ -469,7 +574,7 @@ $(function() {
           document.getElementById("input").innerHTML = data.cleaned_text;
           clear()
           set_up()
-        //$("#result").text( (data.result).toString() );
+        //$(#result").text( (data.result).toString() );
         
       });
       return false;

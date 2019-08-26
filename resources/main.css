@@ -103,7 +103,8 @@ body{
   height:300px;
   width: 400px;
   background-color: whitesmoke;
-  white-space:pre;
+  white-space: pre-wrap;
+  word-wrap:break-word;
 }
 
 [contenteditable=true]:empty:before {
@@ -117,6 +118,8 @@ body{
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
+  white-space: pre-wrap;
+  word-wrap:break-word;
 }
 
 .tooltip .tooltiptext {
@@ -128,6 +131,8 @@ body{
   border-radius: 6px;
   padding: 5px 0;
   color:blue;
+  white-space: pre-wrap;
+  word-wrap:break-word;
 
   /* Position the tooltip */
   position: absolute;
